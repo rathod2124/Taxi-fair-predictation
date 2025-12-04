@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+df=pd.read_csv("C:\\Users\\RATHOD\\Desktop\\ml_project\\H1N1_Flu_Vaccines.csv")
+df = pd.read_csv("C:/Users/RATHOD/Desktop/ml_project/H1N1_Flu_Vaccines.csv")
+
+df.head()
+
+
+print(df.isnull().sum())
+
+# Fill missing values with most frequent value
+df.fillna(df.mode().iloc[0], inplace=True)
+
+# Drop respondent_id
+df.drop('respondent_id', axis=1, inplace=True)
+
+# Convert categorical columns to numeric using get_dummies
+df = pd.get_dummies(df, drop_first=True)
+
+# Info about the cleaned dataset
+df.info()
+print(df.isnull().sum())
+df.fillna(df.mode().iloc[0], inplace=True)
+df.drop('respondent_id', axis=1, inplace=True)
+df = pd.get_dummies(df, drop_first=True)
+df.info()
+h1n1_counts = df['h1n1_vaccine'].value_counts()
+
+sns.barplot(x=h1n1_counts.index, y=h1n1_counts.values)
+plt.xticks([0, 1], ['Not Vaccinated', 'Vaccinated'])
+plt.ylabel("Number of People")
+plt.title("H1N1 Vaccination Counts (Bar Graph)")
+plt.show()
+# Pie Chart
+plt.figure(figsize=(6,6))
+plt.pie(h1n1_counts.values,
+        labels=['Not Vaccinated', 'Vaccinated'],
+        autopct='%1.1f%%',
+        startangle=140,
+        colors=["#ff9988","#66b3ff"])
+plt.title("H1N1 Vaccination Distribution (Pie Chart)")
+plt.axis('equal')  # Equal aspect ratio ensures circle shape
+plt.show()
+
+# Count how many people took or didn’t take the H1N1 vaccine
+h1n1_counts = df['h1n1_vaccine'].value_counts()
+
+print("📊 H1N1 Vaccination Counts:")
+print(f"🟥 Not Vaccinated: {h1n1_counts[0]}")
+print(f"🟩 Vaccinated: {h1n1_counts[1]}")
+
+
+
